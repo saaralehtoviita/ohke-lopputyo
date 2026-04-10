@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
+
+<div class="m-5">
+  <h1>Country info</h1>
+  <h4>Population data for countries in Europe</h4>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>Population</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for country in countries_europe %}
+      <tr>
+        <td>{{ country.name }}</td>
+        <td>{{ country.population }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

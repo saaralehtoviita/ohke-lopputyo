@@ -1,0 +1,85 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
+
+<div class="m-5">
+  <h1>Country info</h1>
+  <h4>Population data for {{ region }}</h4>
+  <div>
+    <button onclick="showTable()" class="btn btn-primary">Data in table</button>
+    <button onclick="showChart()" class="btn btn-primary">Data in chart</button>
+  </div>
+
+  <div id="tableView" style="display: none">
+    <table class="table table-striped">
+      <h2>Data in table</h2>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Population</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for country in countries_region %}
+        <tr>
+          <td>
+            <a href="{{ url_for('get_country_by_name', name=country.name) }}"
+              >{{ country.name }}</a
+            >
+          </td>
+          <td>{{ country.population }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div id="chartView" style="display: none">
+    <h2>Data in graph</h2>
+    <canvas id="myChart" width="1200" height="1000"></canvas>
+    <script>
+      const countries = {{ countries_region | tojson }};
+
+      const labels = countries.map(c => c.name);
+      const populations = countries.map(c => c.population)
+
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var barChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+              labels: labels,
+              datasets: [
+                  {
+                      label: "Population",
+                      data: populations,
+                      //fill: false,
+                      borderColor: "rgb(75, 192, 192)",
+                      borderWidth: 1
+
+                  }
+              ]
+
+          },
+          options: {
+              responsive: false,//käyttää annettuja koko-arvoja
+              scales: {
+                  y: {
+                      type: "logarithmic"
+                  }
+              }
+          }
+      });
+    </script>
+  </div>
+  <script>
+    function showTable() {
+      document.getElementById("tableView").style.display = "block";
+      document.getElementById("chartView").style.display = "none";
+    }
+
+    function showChart() {
+      document.getElementById("tableView").style.display = "none";
+      document.getElementById("chartView").style.display = "block";
+    }
+  </script>
+</div>
+
+{% endblock %}

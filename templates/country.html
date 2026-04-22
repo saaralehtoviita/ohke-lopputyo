@@ -1,25 +1,25 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
 
-<div class="m-5">
-  <h1>Country info</h1>
-  <h4>Population data for countries in Europe</h4>
+<div class="m-5" style="background-image: {{country_data.flags.png}};">
+  <h1>Information {{country_data.name.common }}</h1>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Country</th>
-        <th>Population</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for country in countries_europe %}
-      <tr>
-        <td>{{ country.name }}</td>
-        <td>{{ country.population }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
+  <table class="table table-success">
+    <tr>
+      <th>Header</th>
+      <th>Data</th>
+    </tr>
+    <tr class="table-success">
+      <td>Capital</td>
+      <td>{{country_data.capital[0]}}</td>
+    </tr>
+    <tr>
+      <td>Currency</td>
+      <td>{{country_data.currencies.name}}</td>
+    </tr>
   </table>
+  <div>
+    <img src="{{country_data.flags.png}}" />
+  </div>
 </div>
 
 {% endblock %}

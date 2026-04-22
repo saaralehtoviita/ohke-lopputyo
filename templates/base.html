@@ -12,17 +12,19 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='static/css/style.css') }}"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {% block head %}{% endblock %}
   </head>
   <body>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Country info</a>
+        <a class="navbar-brand" href="/">Country Info </a>
 
         <div class="navbar-nav">
           <a class="nav-link" href="/">Home</a>
-          <a class="nav-link" href="/country">Country</a>
+          <a class="nav-link" href="/countries">Countries</a>
+          <a class="nav-link" href="/countriesEurope">Countries Europe</a>
         </div>
       </div>
     </nav>

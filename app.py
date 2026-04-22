@@ -5,18 +5,27 @@ app = Flask(__name__)
 
 def get_all_countries():
     url = 'https://restcountries.com/v3.1/all?fields=name,population,region'
-    response = requests.get(url)
-    data = response.json()
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
 
-    countries = []
+        data = response.json()
+        
+        countries = []
 
-    for country in data: 
-        countries.append({
+        for country in data: 
+            countries.append({
                 "name": country["name"]["common"],
                 "population": country["population"],
                 "region": country["region"]
         })
-    return countries
+        return countries
+    
+    except requests.exceptions.RequestException as e:
+        print("API error: ", e)
+        return []
+
+
 
 #flask routing = decorating, binds a function to a URL
 @app.route('/')
@@ -46,6 +55,9 @@ def all_countries():
 @app.route('/countriesRegion')
 def get_countries_by_region():
     region = request.args.get("region")
+
+    if not region:
+        return render_template('error.html', message="Region is required")
 
     url = f"https://restcountries.com/v3.1/region/{region}"
     response = requests.get(url)
@@ -106,16 +118,24 @@ def countriesEurope():
 @app.route('/country')
 def get_country_by_name():
     name = request.args.get("name")
+    
+    if not name:
+        render_template('error.html', message="name is required")
 
     url = f"https://restcountries.com/v3.1/name/{name}"
-    response = requests.get(url)
-    data = response.json()
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
 
-    if len(data) > 0:
-        country_data = data[0]
-        return render_template('country.html', country_data=country_data)
+        if len(data) > 0:
+            country_data = data[0]
+            return render_template('country.html', country_data=country_data)
+        
+    except requests.exceptions.RequestException as e:
+        print("API error: ", e)
     
-    return "Country not found"
+        return render_template('error.html', message="Country not found")
 
     
         

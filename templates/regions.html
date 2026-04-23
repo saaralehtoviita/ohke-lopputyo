@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
+
+<div class="m-5">
+  <h1 class="text-center mb-5">Populations ordered by region</h1>
+  <canvas id="regionsPieChart"></canvas>
+  <script>
+
+    const regionNames = {{ region_names| tojson }};
+    const regionPopulations = {{ region_populations| tojson}};
+
+    var ctx = document.getElementById("regionsPieChart").getContext("2d");
+    var pieChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: regionNames,
+            datasets: [
+                {
+                    label: "Population",
+                    data: regionPopulations
+                }
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+  </script>
+</div>
+
+{% endblock %}

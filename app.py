@@ -47,6 +47,29 @@ def countries_top10():
 
     return render_template('index.html', countriestop10=countriestop10, countrieslowest10=countrieslowest10)
 
+@app.route('/regions')
+def all_regions():
+    countries = get_all_countries()
+
+    regions = {}
+
+    for c in countries:
+        region = c["region"]
+        population = c["population"]
+
+        if region not in regions:
+            regions[region] = 0
+        
+        regions[region] += population
+    
+    print(regions)
+
+    region_names = list(regions.keys())
+    region_populations = list(regions.values())
+
+    return render_template('regions.html', region_names=region_names, region_populations=region_populations)
+
+
 @app.route('/countries')
 def all_countries():
     countries = get_all_countries()
@@ -81,24 +104,6 @@ def get_countries_by_region():
                            region=region.capitalize()
                            )
 
-@app.route("/countriesGraph")
-def graph_test():
-    data = [
-        ("01-01-2020", 1597),
-        ("02-02-2020", 1456),
-        ("03-01-2020", 1908),
-        ("04-01-2020", 896),
-        ("05-01-2020", 755),
-        ("06-01-2020", 453),
-        ("07-01-2020", 1100),
-        ("08-01-2020", 1235),
-        ("09-01-2020", 1478),
-    ]
-    labels = [row[0] for row in data]
-    values = [row[1] for row in data]
-
-    return render_template("countriesGraph.html", labels=labels, values=values)
-
 @app.route('/countriesEurope')
 def countriesEurope():
 
@@ -120,22 +125,54 @@ def get_country_by_name():
     name = request.args.get("name")
     
     if not name:
-        render_template('error.html', message="name is required")
+        return render_template('error.html', message="name is required")
 
     url = f"https://restcountries.com/v3.1/name/{name}"
     try:
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
+        print(data)
 
         if len(data) > 0:
-            country_data = data[0]
-            return render_template('country.html', country_data=country_data)
+            country = {
+                "name": data[0]["name"]["common"],
+                "flag": data[0]["flags"]["png"],
+                "population": data[0]["population"],
+                "languages": data[0].get("languages"),
+                "region": data[0]["region"],
+                "subregion": data[0].get("subregion"),
+                "capital": data[0].get("capital")[0],
+                "area": data[0].get("area"),
+                "currencies": data[0].get("currencies", {}),
+                "density": data[0]["population"] / data[0]["area"]
+            }
+
+            return render_template('country.html', country=country)
         
     except requests.exceptions.RequestException as e:
         print("API error: ", e)
     
         return render_template('error.html', message="Country not found")
+    
+# testing chart.js
+@app.route("/countriesGraph")
+def graph_test():
+    data = [
+        ("01-01-2020", 1597),
+        ("02-02-2020", 1456),
+        ("03-01-2020", 1908),
+        ("04-01-2020", 896),
+        ("05-01-2020", 755),
+        ("06-01-2020", 453),
+        ("07-01-2020", 1100),
+        ("08-01-2020", 1235),
+        ("09-01-2020", 1478),
+    ]
+    labels = [row[0] for row in data]
+    values = [row[1] for row in data]
+
+    return render_template("countriesGraph.html", labels=labels, values=values)
 
     
         

@@ -1,6 +1,14 @@
 # Python practice project
 
-This is a practice project for school. The aim of the project is to deepen my Python-programming skills. The main technologies used will be Flask and Jinja2 and some graphical tool for visualizing data. The documentation can be used later on as a guide for initializing Flask-projects.
+This is a practice project for school. My main goals for this project are:
+
+- To revise and deepen my understanding of Python programming
+- To learn and apply a new Python framework (Flask) in practice
+- To reinforce my skills in working with REST APIs and utilizing public data sources
+- To improve my ability to structure and develop a small web application
+- To focus on clear and comprehensive documentation, ensuring that the application can be easily understood and executed by others.
+
+The main technologies used will be Flask and Python for the backend, and Jinja2, HTML, CSS, Bootstrap, JavaScript and Chart.js for the front-end. The documentation can be used later on as a guide for initializing Flask-projects.
 Since I am a Windows-user, all the commands are for Windows. Commands for Mac or Linux might vary.
 
 ```
@@ -12,6 +20,8 @@ where python
 ```
 
 ## Flask
+
+Flask is a lightweight web application framework for Python. I followed this YouTube-video to get a basic understanding of Flask and Jinja2: https://www.youtube.com/watch?v=Z1RJmh_OqeA
 
 1. Creating a virtual environment. This creates an isolated environment for the project and is needed so that the project can have its own dependencies and use a specific version of the Python interpreteter. The following command can be used for installing the virtual environment.
 
@@ -39,12 +49,28 @@ Deactivating the virtual environment
 deactivate
 ```
 
-3. Installing flask
+3. Installing Flask
 
 ```
 pip install flask
 ```
 
+4. Using Flask in the project
+   In the app.py file, Flask needs to be imported:
+
+```
+from flask import Flask
+```
+
 ## Jinja2
 
-## Graphical tools
+Jinja2 is a template engine for Python used to generate dynamic HTML content. Jinja2 works together with Flask and is installed together with Flask. Jinja2 supports template inheritance. In my case, I for example used it to the other html-files to inherit the navigation bar from the base.html-file. One of the basic functionalities, is showing data from the backend by using render_template. It can also be used as for-loops for looping trough data in lists and if-statements for checking the data and front-end error handling.
+
+## Other front-end technologies and data visualization
+
+Together with Jinja2 I decided to use Bootstrap for making the page user friendly in an easy way. For data visualization I am using chart.js together with JavaScript. Both are used trough CDN (Content Delivery Network) so I did not install them locally. Since the templates are inherited from base.html, the only thing I had to do, was to add the links to them in the head of the base-file:
+
+```
+<link href="https://cdn.jsdelivr.net/...bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/...chart.js"></script>
+```

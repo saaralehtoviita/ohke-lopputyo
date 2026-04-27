@@ -9,6 +9,8 @@
       <tr>
         <th>Country</th>
         <th>Population</th>
+        <th>Capital</th>
+        <th>Region</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +19,8 @@
         ><tr>
           <td>{{ country.name }}</td>
           <td>{{ country.population }}</td>
+          <td>{{ country.capital[0] }}</td>
+          <td>{{ country.region }}</td>
         </tr>
       </a>
       {% endfor %}

@@ -1,95 +1,154 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
+{% extends "base.html" %} {% block title %}Countries{% endblock %} {% block body
+%}
 
-<div class="m-5">
+<div class="container mt-4">
   <h1>Country info</h1>
-  <h4>Population data for {{ region }}</h4>
-  <div>
-    <button onclick="showTable()" class="btn btn-primary">Data in table</button>
-    <button onclick="showChart()" class="btn btn-primary">Data in chart</button>
+  <h4>Region: {{ region }}</h4>
+
+  <!-- Näkymää vaihtavat napit-->
+  <div class="mb-3">
+    <button onclick="showTable()" class="btn btn-primary">Table</button>
+    <button onclick="showChart()" class="btn btn-primary">Chart</button>
   </div>
 
+  <!-- Taulukkonäkymä -->
   <div id="tableView" style="display: none">
-    <table class="table table-striped">
-      <h2>Data in table</h2>
-      <thead>
-        <tr>
-          <th>Country</th>
-          <th>Population</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for country in countries_region %}
-        <tr>
-          <td>
-            <a href="{{ url_for('get_country_by_name', name=country.name) }}"
-              >{{ country.name }}</a
-            >
-          </td>
-          <td>{{ country.population }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <h2>Data table</h2>
+
+    <div class="mb-2">
+      <button onclick="showPopulation()" class="btn btn-secondary">
+        Population order
+      </button>
+      <button onclick="showDensity()" class="btn btn-secondary">
+        Density order
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <!-- Väestöluvun mukaan järjestetty -->
+      <table id="populationTable" class="table table-striped w-100">
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>Density (people / km2)</th>
+            <th>Population</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for country in countries_by_population %}
+          <tr>
+            <td>
+              <a href="{{ url_for('get_country_by_name', name=country.name) }}">
+                {{ country.name }}
+              </a>
+            </td>
+            <td>{{ country.density|round(2) }}</td>
+            <td>{{ country.population }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Väestötiheyden mukaan järjestetty -->
+      <table
+        id="densityTable"
+        class="table table-striped w-100"
+        style="display: none"
+      >
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>Density (people / km2)</th>
+            <th>Population</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for country in countries_region_by_density %}
+          <tr>
+            <td>
+              <a href="{{ url_for('get_country_by_name', name=country.name) }}">
+                {{ country.name }}
+              </a>
+            </td>
+            <td>{{ country.density|round(2) }}</td>
+            <td>{{ country.population }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
+  <!-- Kaavionäkymä -->
   <div id="chartView" style="display: none">
-    <h2>Data in graph</h2>
-    <canvas id="myChart" width="1200" height="1000"></canvas>
-    <script>
-      const countries = {{ countries_region | tojson }};
-
-      const labels = countries.map(c => c.name);
-      const populations = countries.map(c => c.population)
-
-      var ctx = document.getElementById("myChart").getContext("2d");
-      var barChart = new Chart(ctx, {
-          type: "bar",
-          data: {
-              labels: labels,
-              datasets: [
-                  {
-                      label: "Population",
-                      data: populations,
-                      backgroundColor: "rgba(54, 162, 235, 0.5)",
-                      borderColor: "rgba(54, 162, 235, 1)",
-                      borderWidth: 1
-
-                  }
-              ]
-
-          },
-          options: {
-              responsive: false,//käyttää annettuja koko-arvoja
-              scales: {
-                  y: {
-                      type: "logarithmic",
-                      ticks: {
-                        maxTicksLimit: 10
-                      }
-                  },
-                  x: {
-                    ticks: {
-                        font: {
-                            size: 10
-                        }
-                    }
-                  }
-              }
-          }
-      });
-    </script>
+    <h2>Population chart</h2>
+    <canvas id="myChart" width="1200" height="600"></canvas>
   </div>
-  <script>
-    function showTable() {
-      document.getElementById("tableView").style.display = "block";
-      document.getElementById("chartView").style.display = "none";
-    }
-
-    function showChart() {
-      document.getElementById("tableView").style.display = "none";
-      document.getElementById("chartView").style.display = "block";
-    }
-  </script>
 </div>
+
+<script>
+  //taulukon tai kaavion näyttäminen
+  function showTable() {
+    document.getElementById("tableView").style.display = "block";
+    document.getElementById("chartView").style.display = "none";
+    showPopulation();
+  }
+
+  function showChart() {
+    document.getElementById("tableView").style.display = "none";
+    document.getElementById("chartView").style.display = "block";
+  }
+
+  //taulukon järjestyksen muuttaminen
+  function showPopulation() {
+    document.getElementById("populationTable").style.display = "table";
+    document.getElementById("densityTable").style.display = "none";
+  }
+
+  function showDensity() {
+    document.getElementById("populationTable").style.display = "none";
+    document.getElementById("densityTable").style.display = "table";
+  }
+
+  // taulukko
+  const countries = {{ countries_by_population | tojson }};
+
+  const labels = countries.map(c => c.name);
+  const populations = countries.map(c => c.population);
+
+  const ctx = document.getElementById("myChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Population",
+        data: populations,
+        backgroundColor: "rgba(54, 162, 235, 0.5)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        y: {
+          type: "logarithmic",
+          ticks: {
+            maxTicksLimit: 10
+          }
+        },
+        x: {
+          ticks: {
+            font: {
+              size: 10
+            }
+          }
+        }
+      }
+    }
+  });
+</script>
 
 {% endblock %}

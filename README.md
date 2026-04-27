@@ -93,7 +93,7 @@ Data can be fetched based on one field, example request used in this application
 https://restcountries.com/v3.1/region/asia
 ```
 
-All data can be fetched, but the maximum number of fields is then 10:
+All data can be fetched using fields for filtering:
 
 ```
 https://restcountries.com/v3.1/all?fields=name,flag,population,region,capital,area,density,languages,currencies,location
@@ -135,7 +135,7 @@ The application is not published, so it must be run locally.
 python app.py
 ```
 
-The app will then be run locally in the browser, the default adress is:
+The application should now be run locally:
 
 ```
 http://127.0.0.1:5000
@@ -151,3 +151,7 @@ I am happy that I got the chance to repeat python, fetching data and graphical t
 - options for filtering data, for example choosing only independent countries
 - more data visualizations in different charts
 - publishing the application
+
+## Use of AI
+
+I used AI (chatGPT) for structuring and improving the documentation. I also used it to refactor the app.py file - with it's help I got rid of multiple data fetching occasions and managed to make the code more clean and simple.

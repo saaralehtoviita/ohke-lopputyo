@@ -82,6 +82,23 @@ Here the sorting is done in the backend and JavaScript is used to define which d
 
 ![Screenshot: example table](image-3.png)
 
+## REST API
+
+The data used in this application is from the REST Countries API:
+https://restcountries.com/.
+
+Data can be fetched based on one field, example request used in this application for filtering countries by region:
+
+```
+https://restcountries.com/v3.1/region/asia
+```
+
+All data can be fetched, but the maximum number of fields is then 10:
+
+```
+https://restcountries.com/v3.1/all?fields=name,flag,population,region,capital,area,density,languages,currencies,location
+```
+
 ## Other front-end technologies and data visualization
 
 Together with Jinja2 I decided to use Bootstrap for making the page user friendly in an easy way. For data visualization I am using chart.js together with JavaScript. Both are used trough CDN (Content Delivery Network) so I did not install them locally. (https://www.cloudflare.com/learning/cdn/what-is-a-cdn/) Since the templates are inherited from base.html, the only thing I had to do, was to add the links to them in the head of the base-file:

@@ -98,6 +98,32 @@ Example of how flask and python grabs the data (two lists with different data) a
 
 ![Screenshot: front end code where the chart is built](image-6.png)
 
+## Running the application
+
+The application is not published, so it must be run locally.
+
+1. Download or clone the project to your computer.
+
+2. Open a terminal and navigate to the project folder.
+
+3. Activate the virtual environment:
+
+```
+.\env\Scripts\Activate
+```
+
+4. Run the application:
+
+```
+python app.py
+```
+
+The app will then be run locally in the browser, the default adress is:
+
+```
+http://127.0.0.1:5000
+```
+
 ## Further development
 
 I am happy that I got the chance to repeat python, fetching data and graphical tools and learned how to build the backend using a new technology. Some thoughts and ideas for future development:

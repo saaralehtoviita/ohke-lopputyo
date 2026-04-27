@@ -95,3 +95,16 @@ Example of how flask and python grabs the data (two lists with different data) a
 ![Sceenshot: backend code for sending data](image-4.png)
 
 ![Screenshot: homepage, data in charts](image-5.png)
+
+![Screenshot: front end code where the chart is built](image-6.png)
+
+## Further development
+
+I am happy that I got the chance to repeat python, fetching data and graphical tools and learned how to build the backend using a new technology. Some thoughts and ideas for future development:
+
+- built in map in the country info page
+- more options for sorting the data in the charts and tables
+- more calculations in the backend
+- options for filtering data, for example choosing only independent countries
+- more data visualizations in different charts
+- publishing the application

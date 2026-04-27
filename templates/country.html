@@ -1,25 +1,62 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
 
 <div class="m-5">
-  <h1>Country info</h1>
-  <h4>Population data for countries in Europe</h4>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card" style="width: 28rem">
+        <img src="{{ country.flag }}" class="card-img-top" />
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Country</th>
-        <th>Population</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for country in countries_europe %}
-      <tr>
-        <td>{{ country.name }}</td>
-        <td>{{ country.population }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        <div class="card-body">
+          <h5 class="card-title">{{ country.name }}</h5>
+
+          <p class="card-text"></p>
+          <table class="table table-striped">
+            <tr></tr>
+            <tr>
+              <td>Population</td>
+              <td>{{ country.population }}</td>
+            </tr>
+            <tr>
+              <td>Region</td>
+              <td>{{ country.region }}</td>
+            </tr>
+            <tr>
+              <td>Capital</td>
+              <td>{{ country.capital[0] }}</td>
+            </tr>
+            <tr>
+              <td>Languages</td>
+              <td>
+                {% for language in country.languages.values() %} {{ language }}
+                {% if not loop.last %}, {% endif %} {% endfor %}
+              </td>
+            </tr>
+            <tr>
+              <td>Currencies</td>
+              {% for code, currency in country.currencies.items() %}
+              <td>{{currency.name}} ({{currency.symbol}})</td>
+              {% endfor %}
+            </tr>
+            <tr>
+              <td>Area</td>
+              <td>{{ country.area }} km2</td>
+            </tr>
+            <tr>
+              <td>Density</td>
+              <td>{{ country.density | round(2) }} / km2</td>
+            </tr>
+            <tr>
+              <td>Location</td>
+              <td>
+                <a href="{{country.location}}" target="_blank">View on map</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-6">{{ country.location }}</div> -->
+  </div>
 </div>
 
 {% endblock %}

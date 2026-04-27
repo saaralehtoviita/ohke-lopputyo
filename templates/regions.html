@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
+
+<div class="m-5">
+  <h1 class="text-center mb-5">Region info</h1>
+  <div class="row">
+    <div class="col-md-7">
+      <h3 class="text-center mb-3">Population numbers by region</h3>
+      <canvas id="regionsPieChart"></canvas>
+      <script>
+
+        const regions = {{ region_list | tojson }};
+        const names = regions.map(r => r.name)
+        const populations = regions.map(r => r.population)
+        const densities = regions.map(r => r.density)
+
+        var ctx = document.getElementById("regionsPieChart").getContext("2d");
+        var pieChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: names,
+                datasets: [
+                    {
+                        label: "Population",
+                        data: populations
+                    }
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        });
+      </script>
+    </div>
+    <div class="col-md-4 ml-4">
+      <h3 class="text-center mb-3">Region details</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Area (km2)</th>
+            <th>Density (people / km2)</th>
+            <th>Population</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for region in region_list %}
+            <td>{{region.name}}</td>
+            <td>{{region.area|round(2)}}</td>
+            <td>{{region.density|round(2)}}</td>
+            <td>{{region.population}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

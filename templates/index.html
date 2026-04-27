@@ -1,4 +1,128 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
-<h1>Home page</h1>
-<p>This is the home page</p>
+<div class="m-5">
+  <h1>Country info</h1>
+  <p>
+    The information on this page is taken from this page:
+    <a href="https://restcountries.com/">https://restcountries.com/</a>.
+  </p>
+  <div class="container">
+    <div class="row">
+      <!--Vasen kolumni-->
+
+      <h3>The 10 countries with the highest population</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <canvas id="chartTop10" width="600" height="400"></canvas>
+        <script>
+          const countries = {{ countriestop10| tojson }};
+
+          const labels = countries.map(c => c.name);
+          const populations = countries.map(c => c.population)
+
+          var ctx = document.getElementById("chartTop10").getContext("2d");
+          var barChart = new Chart(ctx, {
+              type: "bar",
+              data: {
+                  labels: labels,
+                  datasets: [
+                      {
+                          label: "Population",
+                          data: populations,
+                          backgroundColor: "rgba(54, 162, 235, 0.7)",
+                          borderColor: "rgba(78, 121, 167, 1)",
+                          borderWidth: 1
+                      }
+                  ]
+
+              },
+              options: {
+                  responsive: true,//false = käyttää annettuja koko-arvoja
+                  scales: {
+                      y: {
+                          type: "logarithmic"
+                      }
+                  }
+              }
+          });
+        </script>
+
+        <h3 class="mt-5">
+          The 10 countries with the lowest population (exluding countries with 0
+          population)
+        </h3>
+
+        <canvas id="chartLowest10" width="600" height="400"></canvas>
+        <script>
+          const countriesLowest = {{ countrieslowest10| tojson }};
+
+          const labelsLowest = countriesLowest.map(c => c.name);
+          const populationsLowest = countriesLowest.map(c => c.population)
+
+          var ctx = document.getElementById("chartLowest10").getContext("2d");
+          var barChart = new Chart(ctx, {
+              type: "bar",
+              data: {
+                  labels: labelsLowest,
+                  datasets: [
+                      {
+                          label: "Population",
+                          data: populationsLowest,
+                          backgroundColor: "rgba(255, 159, 64, 0.7)",
+                          borderColor: "rgba(78, 121, 167, 1)",
+                          borderWidth: 1
+
+                      }
+                  ]
+
+              },
+              options: {
+                  responsive: true,//false = käyttää annettuja koko-arvoja
+                  scales: {
+                      y: {
+                          type: "logarithmic"
+                      }
+                  }
+              }
+          });
+        </script>
+      </div>
+      <!--Oikea kolumni-->
+      <div class="col-md-3">
+        <div class="input mb-5">
+          <form action="/country" method="GET">
+            <input
+              type="text"
+              name="name"
+              class="form-control mb-2"
+              placeholder="Country name"
+            />
+            <button type="submit" class="btn btn-primary w-100">
+              Search country
+            </button>
+          </form>
+        </div>
+        <div class="input mb-5">
+          <form action="/countriesRegion" method="GET">
+            <select name="region" class="form-select mb-2">
+              <option value="">Select region</option>
+              <option value="Europe">Europe</option>
+              <option value="Asia">Asia</option>
+              <option value="Africa">Africa</option>
+              <option value="Americas">North and South America</option>
+              <option value="North America">North America</option>
+              <option value="South America">South America</option>
+              <option value="Oceania">Oceania</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary w-100">
+              Search by region
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

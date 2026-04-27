@@ -13,6 +13,32 @@
       href="{{ url_for('static', filename='static/css/style.css') }}"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .table {
+        --bs-table-bg: #f8f9fa;
+        --bs-table-striped-bg: #e7f1ff;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .regionsview {
+        justify-content: center;
+        align-items: center;
+      }
+      /*       .table-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        border: 1px solid #dee2e6;
+      } */
+      .card {
+        --bs-card-bg: #f8f9fa;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      body {
+        background-color: rgb(235, 231, 227);
+      }
+    </style>
     {% block head %}{% endblock %}
   </head>
   <body>
@@ -24,7 +50,6 @@
         <div class="navbar-nav">
           <a class="nav-link" href="/">Home</a>
           <a class="nav-link" href="/countries">Countries</a>
-          <a class="nav-link" href="/countriesEurope">Countries Europe</a>
           <a class="nav-link" href="/regions">Regions</a>
         </div>
       </div>
